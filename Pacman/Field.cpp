@@ -2,11 +2,12 @@
 #include "Field.h"
 
 
-Field::Field(Sprite& tile, int& coutnGosts, float& _speed)
+Field::Field(Sprite& tile, int& coutnGosts, float& _speed, float& _playerSpeed)
 {
 	readField(tile);
 	creatStaticObject(tile);
 	creatDinamicObject(tile, coutnGosts, _speed);
+	creatPlayerObject(tile, _playerSpeed);
 }
 Field::~Field()
 {
@@ -26,27 +27,50 @@ void Field::getSize(unsigned int& W, unsigned int& H)
 void Field::update(RenderWindow& window, float& time)
 {
 	for (const auto& obj : wall) {
-		if (obj != nullptr) {
-			obj->drawObject(window);
-		}
+		obj->drawObject(window);
 	}
 	for (const auto& obj : gosts) {
-		if (obj != nullptr) {
-			obj->update(time);
+		obj->update(time);
 			
-			if (obj->checkCollision(wall)) {
-				obj->moveBack(time);
-				changeGostMoveVector(*obj);
-			}
-			
-			obj->drawObject(window);
+		if (obj->checkCollisionWall(wall)) {
+			obj->moveBack(time);
+			changeGostMoveVector(*obj);
 		}
+			
+		obj->drawObject(window);
 	}
+
+	if (player.playerStatus == Player::PlayerStatus::live) {
+		if (player.checkCollisionWall(wall)) {
+			player.moveBack(time);
+		}
+
+		if (gold.size()) {
+			player.checkCollisionGold(gold);
+		}
+
+		if (player.checkCollisionGosts(gosts)) {
+			player.playerStatus = Player::PlayerStatus::dead;
+		}
+
+		std::pair<float, float> p = player.getPoint();
+		if (p.first + 32 > field.at(0).size() * 32) {
+			player.playerStatus = Player::PlayerStatus::win;
+		}
+		if (p.first < 0) {
+			player.moveBack(time);
+		}
+		player.drawObject(window);
+	}
+
 	for (const auto& obj : gold) {
-		if (obj != nullptr) {
-			obj->drawObject(window);
-		}
+		obj->drawObject(window);
 	}
+}
+
+void Field::eventKeyPressed(Keyboard::Key key, float& time)
+{
+	player.setKeyPressed(key, time);
 }
 
 void Field::readField(Sprite& tile)
@@ -130,10 +154,10 @@ void Field::creatDinamicObject(Sprite& tile, int& count, float& _speed)
 				float x = static_cast<float>((field.at(0).size() / 2) * 32);
 				float y = static_cast<float>((field.size() / 2) * 32);
 
-				tile.setPosition(x, y + obj);
-				tile.setTextureRect(IntRect(j * 32 + obj * 64, i * 32, 31, 31));
+				tile.setPosition(x + 1, y + obj);
+				tile.setTextureRect(IntRect(j * 32 + obj * 64 + 1, i * 32 + 1, 30, 30));
 				dObject->setVSprites(tile);
-				dObject->setPoint(x, y + obj);
+				dObject->setPoint(x + 1, y + obj);
 			}
 		}
 
@@ -141,6 +165,23 @@ void Field::creatDinamicObject(Sprite& tile, int& count, float& _speed)
 		dObject->setSpeed(_speed);
 		gosts.push_back(dObject);
 	}
+}
+void Field::creatPlayerObject(Sprite& tile, float& _speed)
+{
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 2; ++j) {
+			tile.setTextureRect(IntRect(j * 32 + 321, i * 32 + 1, 30, 30));
+			player.setVSprites(tile);
+		}
+	}
+
+	float y = static_cast<float>((field.size() / 2) * 32) + 1;
+
+	tile.setPosition(1.0, y);
+	player.setPoint(1.0, y);
+	tile.setTextureRect(IntRect(321, 1, 30, 30));
+	player.setSprite(tile);
+	player.setSpeed(_speed);
 }
 
 void Field::changeGostMoveVector(DinamicObject& obj)

@@ -1,27 +1,16 @@
+#include <algorithm>
+
 #include "pch.h"
 #include "Player.h"
 
-
-Player::Player(Texture &image)
-{
-	player.sprite.setTexture(image);
-	player.sprite.setTextureRect(IntRect(320, 0, 32, 32));
-}
+Player::Player() { setMoveVector(0, 0); }
 Player::~Player() { }
-
-void Player::update(RenderWindow& window, Sprite& tile)
-{
-	player.sprite.setPosition(player.x, player.y);
-	tile = player.sprite;
-
-	window.draw(tile);
-}
 
 void Player::setKeyPressed(Keyboard::Key key, float& time)
 {
 	switch (key)
 	{
-		case Keyboard::Left:	keyLeft(time);	break;
+		case Keyboard::Left:	keyLeft(time);  break;
 		case Keyboard::Right:	keyRight(time); break;
 		case Keyboard::Up:		keyUp(time);	break;
 		case Keyboard::Down:	keyDown(time);	break;
@@ -30,49 +19,66 @@ void Player::setKeyPressed(Keyboard::Key key, float& time)
 }
 void Player::keyLeft(float& time)
 {
-	setPlayerRect(64);
-	player.x -= player.speed;
-
-	setCurrent(time);
+	setMoveVector(-1, 0);
+	update(time);
 }
 void Player::keyRight(float& time)
 {
-	setPlayerRect(0);
-	player.x += player.speed;
-
-	setCurrent(time);
+	setMoveVector(1, 0);
+	update(time);
 }
 void Player::keyUp(float& time)
 {
-	setPlayerRect(96);
-	player.y -= player.speed;
-
-	setCurrent(time);
+	setMoveVector(0, -1);
+	update(time);
 }
 void Player::keyDown(float& time)
 {
-	setPlayerRect(32);
-	player.y += player.speed;
-
-	setCurrent(time);
+	setMoveVector(0, 1);
+	update(time);
 }
 
-void Player::setCurrent(float& time)
+void Player::checkCollisionGold(std::vector<StaticObject*>& gold)
 {
-	time > 2500 ? time = 0 : player.current += 0.5;
+	int index = 0;
 
-	if (player.current > 6) {
-		player.picture = Picture::first;
-		player.current = 0;
-	}
-	else if (player.current > 3) {
-		player.picture = Picture::second;
+	for (const auto& obj : gold) {
+		std::pair<float, float> p = obj->getPoint();
+		index = collisionGold(p);
+
+		if (index != -1) {
+			gold.erase(std::remove(gold.begin(), gold.end(), obj), gold.end());
+		}
 	}
 }
-
-void Player::setPlayerRect(int y)
+bool Player::checkCollisionGosts(std::vector<DinamicObject*>& gosts)
 {
-	player.picture == Picture::first
-		? player.sprite.setTextureRect(IntRect(320, y, 32, 32))
-		: player.sprite.setTextureRect(IntRect(352, y, 32, 32));
+	for (const auto& obj : gosts) {
+		std::pair<float, float> p = obj->getPoint();
+		if (collision(p)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+int Player::collisionGold(std::pair<float, float>& p)
+{
+	if (p.first > point.first && p.first < point.first + 30 &&
+		p.second > point.second && p.second < point.second + 30) {
+		return true;
+	}
+	if (p.first + 3 > point.first && p.first + 3 < point.first + 30 &&
+		p.second > point.second && p.second < point.second + 30) {
+		return true;
+	}
+	if (p.first + 3 > point.first && p.first + 3 < point.first + 30 &&
+		p.second + 3 > point.second && p.second + 3 < point.second + 30) {
+		return true;
+	}
+	if (p.first > point.first && p.first < point.first + 30 &&
+		p.second + 3 > point.second && p.second + 3 < point.second + 30) {
+		return true;
+	}
+	return -1;
 }

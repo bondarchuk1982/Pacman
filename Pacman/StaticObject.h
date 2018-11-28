@@ -15,7 +15,7 @@ public:
 	void setSprite(Sprite& spr);
 	void drawObject(RenderWindow& window);
 protected:
-	std::pair<float, float> point = {0.0, 0.0};
+	std::pair<float, float> point = { static_cast<float>(0.0), static_cast<float>(0.0) };
 
 	Sprite sprite;
 };

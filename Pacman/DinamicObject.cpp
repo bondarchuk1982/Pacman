@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "DinamicObject.h"
 
-
 DinamicObject::DinamicObject() { }
 DinamicObject::~DinamicObject() { }
 
@@ -90,7 +89,7 @@ void DinamicObject::moveBack(const float & time)
 	setCurrent(time);
 }
 
-bool DinamicObject::checkCollision(std::vector<StaticObject*>& wall)
+bool DinamicObject::checkCollisionWall(std::vector<StaticObject*>& wall)
 {
 	for (const auto& obj : wall) {
 		std::pair<float, float> p = obj->getPoint();
@@ -102,21 +101,21 @@ bool DinamicObject::checkCollision(std::vector<StaticObject*>& wall)
 }
 bool DinamicObject::collision(std::pair<float, float>& p)
 {
-	if (point.second >= p.second && point.second <= p.second + 32) {
-		if (point.first >= p.first && point.first <= p.first + 32) {
-			return true;
-		}
-		if (point.first + 31 >= p.first && point.first + 31 <= p.first + 32) {
-			return true;
-		}
+	if (point.first > p.first && point.first < p.first + 32 &&
+		point.second > p.second && point.second < p.second + 32) {
+		return true;
 	}
-	if (point.first >= p.first && point.first <= p.first + 32) {
-		if (point.second >= p.second && point.second <= p.second + 32) {
-			return true;
-		}
-		if (point.second + 31 >= p.second && point.second + 31 <= p.second + 32) {
-			return true;
-		}
+	if (point.first + 31 > p.first && point.first + 31 < p.first + 32 &&
+		point.second > p.second && point.second < p.second + 32) {
+		return true;
+	}
+	if (point.first + 31 > p.first && point.first + 31 < p.first + 32 &&
+		point.second + 31 > p.second && point.second + 31 < p.second + 32) {
+		return true;
+	}
+	if (point.first > p.first && point.first < p.first + 32 &&
+		point.second + 31 > p.second && point.second + 31 < p.second + 32) {
+		return true;
 	}
 
 	return false;
