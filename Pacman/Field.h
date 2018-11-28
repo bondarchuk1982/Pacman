@@ -2,20 +2,32 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
+#include "StaticObject.h"
+#include "DinamicObject.h"
+#include "Enemy.h"
+
 using namespace sf;
 
 class Field
 {
 public:
-	Field();
+	Field(Sprite& tile, int& coutnGosts, float& _speed);
 	~Field();
 
 	void getSize(unsigned int& W, unsigned int& H);
 
-	void update(RenderWindow& window, Sprite& tile);
+	void update(RenderWindow& window, float& time);
 private:
 	std::vector <std::string> field;
+	std::vector <StaticObject*> wall;
+	std::vector <StaticObject*> gold;
+	std::vector <DinamicObject*> gosts;
 
-	void creat();
+	StaticObject *sObject;
+	DinamicObject *dObject;
+
+	void readField(Sprite& tile);
+	void creatStaticObject(Sprite& tile);
+	void creatDinamicObject(Sprite& tile, int& count, float& _speed);
 };
 
