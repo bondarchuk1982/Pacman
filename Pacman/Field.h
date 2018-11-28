@@ -10,12 +10,12 @@ public:
 	Field();
 	~Field();
 
-	void getFieldSize(unsigned int& W, unsigned int& H);
+	void getSize(unsigned int& W, unsigned int& H);
 
-	void updateField(RenderWindow& window, Sprite& tile);
+	void update(RenderWindow& window, Sprite& tile);
 private:
 	std::vector <std::string> field;
 
-	void creatField();
+	void creat();
 };
 

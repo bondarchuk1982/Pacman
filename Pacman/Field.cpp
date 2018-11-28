@@ -4,7 +4,7 @@
 
 Field::Field() 
 {
-	creatField();
+	creat();
 }
 
 
@@ -12,7 +12,7 @@ Field::~Field()
 {
 }
 
-void Field::getFieldSize(unsigned int& W, unsigned int& H)
+void Field::getSize(unsigned int& W, unsigned int& H)
 {
 	if (field.size() == 0 || field.at(0).size() == 0) return;
 
@@ -20,7 +20,7 @@ void Field::getFieldSize(unsigned int& W, unsigned int& H)
 	W = static_cast<unsigned int>(field.at(0).size());
 }
 
-void Field::updateField(RenderWindow& window, Sprite& tile)
+void Field::update(RenderWindow& window, Sprite& tile)
 {
 	float i = 0;
 	for (const auto& h : field) {
@@ -46,7 +46,7 @@ void Field::updateField(RenderWindow& window, Sprite& tile)
 	}
 }
 
-void Field::creatField()
+void Field::creat()
 {
 	field = {
 	"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
@@ -62,7 +62,7 @@ void Field::creatField()
 	"     w..w.............w..w     ",
 	"     w..w..ww.....ww..w..w     ",
 	"wwwwww.....w... ...w.....wwwwww",
-	"...........w..   ..w...........",
+	" ..........w..   ..w...........",
 	"wwwwww.....w... ...w.....wwwwww",
 	"     w..w..wwwwwwwww..w..w     ",
 	"     w..w.............w..w     ",
