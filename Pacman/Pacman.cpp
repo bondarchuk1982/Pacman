@@ -9,7 +9,7 @@ using namespace sf;
 
 int main()
 {
-	int countGosts = 1;
+	int countGosts = 5; // количество привидений, максимум 5!
 	float gameSpeed = static_cast<float>(0.05);
 
 	Texture tileSet;
@@ -24,7 +24,6 @@ int main()
 	RenderWindow window(VideoMode(W*32, H*32), "Pacman.");
 
 	Player player(tileSet);
-//	Enemy enemy(tileSet);
 
 	Clock clock;
 
@@ -50,7 +49,6 @@ int main()
 
 		field.update(window, time);
 		//player.update(window, tile);
-		//enemy.update(window, tile, time);
 
 		window.display();
 	}

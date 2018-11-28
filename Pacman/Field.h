@@ -4,7 +4,6 @@
 
 #include "StaticObject.h"
 #include "DinamicObject.h"
-#include "Enemy.h"
 
 using namespace sf;
 
@@ -29,5 +28,6 @@ private:
 	void readField(Sprite& tile);
 	void creatStaticObject(Sprite& tile);
 	void creatDinamicObject(Sprite& tile, int& count, float& _speed);
+	void changeGostMoveVector(DinamicObject& obj);
 };
 

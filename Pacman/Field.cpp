@@ -26,14 +26,26 @@ void Field::getSize(unsigned int& W, unsigned int& H)
 void Field::update(RenderWindow& window, float& time)
 {
 	for (const auto& obj : wall) {
-		obj->drawObject(window);
+		if (obj != nullptr) {
+			obj->drawObject(window);
+		}
 	}
 	for (const auto& obj : gosts) {
-		obj->update(time);
-		obj->drawObject(window);
+		if (obj != nullptr) {
+			obj->update(time);
+			
+			if (obj->checkCollision(wall)) {
+				obj->moveBack(time);
+				changeGostMoveVector(*obj);
+			}
+			
+			obj->drawObject(window);
+		}
 	}
 	for (const auto& obj : gold) {
-		obj->drawObject(window);
+		if (obj != nullptr) {
+			obj->drawObject(window);
+		}
 	}
 }
 
@@ -118,15 +130,41 @@ void Field::creatDinamicObject(Sprite& tile, int& count, float& _speed)
 				float x = static_cast<float>((field.at(0).size() / 2) * 32);
 				float y = static_cast<float>((field.size() / 2) * 32);
 
-				tile.setPosition(x, y);
-				tile.setTextureRect(IntRect(j * 32 + obj * 32, i * 32 + obj * 32, 31, 31));
+				tile.setPosition(x, y + obj);
+				tile.setTextureRect(IntRect(j * 32 + obj * 64, i * 32, 31, 31));
 				dObject->setVSprites(tile);
-				dObject->setPoint(x, y);
+				dObject->setPoint(x, y + obj);
 			}
 		}
 
 		dObject->setSprite(tile);
 		dObject->setSpeed(_speed);
 		gosts.push_back(dObject);
+	}
+}
+
+void Field::changeGostMoveVector(DinamicObject& obj)
+{
+	std::pair<int, int> mvObject = { obj.getMoveVector() };
+
+	bool flagChangeMoveVector = false;
+	while (!flagChangeMoveVector) {
+		int random_variable = std::rand() % 10000;
+		if (mvObject.first != 1 && random_variable > 0 && random_variable <= 2500) {
+			obj.setMoveVector(1, 0);
+			flagChangeMoveVector = true;
+		}
+		if (mvObject.first != -1 && random_variable > 2500 && random_variable <= 5000) {
+			obj.setMoveVector(-1, 0);
+			flagChangeMoveVector = true;
+		}
+		if (mvObject.second != 1 && random_variable > 5000 && random_variable <= 7500) {
+			obj.setMoveVector(0, 1);
+			flagChangeMoveVector = true;
+		}
+		if (mvObject.second != -1 && random_variable > 7500 && random_variable <= 10000) {
+			obj.setMoveVector(0, -1);
+			flagChangeMoveVector = true;
+		}
 	}
 }
