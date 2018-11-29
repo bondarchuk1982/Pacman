@@ -8,6 +8,8 @@ void StaticObject::setPoint(const float& x, const float& y)
 {
 	point.first = x;
 	point.second = y;
+
+	sprite.setPosition(x, y);
 }
 
 std::pair<float, float>& StaticObject::getPoint()
@@ -22,5 +24,6 @@ void StaticObject::setSprite(Sprite& spr)
 
 void StaticObject::drawObject(RenderWindow& window)
 {
+
 	window.draw(sprite);
 }

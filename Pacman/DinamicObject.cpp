@@ -105,15 +105,15 @@ bool DinamicObject::collision(std::pair<float, float>& p)
 		point.second > p.second && point.second < p.second + 32) {
 		return true;
 	}
-	if (point.first + 31 > p.first && point.first + 31 < p.first + 32 &&
+	else if (point.first + 31 > p.first && point.first + 31 < p.first + 32 &&
 		point.second > p.second && point.second < p.second + 32) {
 		return true;
 	}
-	if (point.first + 31 > p.first && point.first + 31 < p.first + 32 &&
+	else if (point.first + 31 > p.first && point.first + 31 < p.first + 32 &&
 		point.second + 31 > p.second && point.second + 31 < p.second + 32) {
 		return true;
 	}
-	if (point.first > p.first && point.first < p.first + 32 &&
+	else if (point.first > p.first && point.first < p.first + 32 &&
 		point.second + 31 > p.second && point.second + 31 < p.second + 32) {
 		return true;
 	}

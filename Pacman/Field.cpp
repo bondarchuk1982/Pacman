@@ -29,18 +29,23 @@ void Field::update(RenderWindow& window, float& time)
 	for (const auto& obj : wall) {
 		obj->drawObject(window);
 	}
-	for (const auto& obj : gosts) {
-		obj->update(time);
-			
-		if (obj->checkCollisionWall(wall)) {
-			obj->moveBack(time);
-			changeGostMoveVector(*obj);
-		}
-			
+
+	for (const auto& obj : gold) {
 		obj->drawObject(window);
 	}
 
 	if (player.playerStatus == Player::PlayerStatus::live) {
+		for (const auto& obj : gosts) {
+			obj->update(time);
+			
+			if (obj->checkCollisionWall(wall)) {
+				obj->moveBack(time);
+				changeGostMoveVector(*obj);
+			}
+			
+			obj->drawObject(window);
+		}
+
 		if (player.checkCollisionWall(wall)) {
 			player.moveBack(time);
 		}
@@ -62,9 +67,8 @@ void Field::update(RenderWindow& window, float& time)
 		}
 		player.drawObject(window);
 	}
-
-	for (const auto& obj : gold) {
-		obj->drawObject(window);
+	else {
+		player.drawPlayerStatus(window);
 	}
 }
 
@@ -116,11 +120,9 @@ void Field::creatStaticObject(Sprite& tile)
 				continue;
 			}
 
-			x = j * 32;
-			y = i * 32;
+			x = j * 32;	y = i * 32;
 
 			if (w == 'w') {
-				tile.setPosition(x, y);
 				tile.setTextureRect(IntRect(384, 96, 32, 32));
 
 				sObject = new StaticObject();
@@ -130,7 +132,6 @@ void Field::creatStaticObject(Sprite& tile)
 				wall.push_back(sObject);
 			}
 			else if (w == '.') {
-				tile.setPosition(x + 15, y + 15);
 				tile.setTextureRect(IntRect(384, 96, 3, 3));
 
 				sObject = new StaticObject();
@@ -154,7 +155,6 @@ void Field::creatDinamicObject(Sprite& tile, int& count, float& _speed)
 				float x = static_cast<float>((field.at(0).size() / 2) * 32);
 				float y = static_cast<float>((field.size() / 2) * 32);
 
-				tile.setPosition(x + 1, y + obj);
 				tile.setTextureRect(IntRect(j * 32 + obj * 64 + 1, i * 32 + 1, 30, 30));
 				dObject->setVSprites(tile);
 				dObject->setPoint(x + 1, y + obj);
@@ -177,10 +177,9 @@ void Field::creatPlayerObject(Sprite& tile, float& _speed)
 
 	float y = static_cast<float>((field.size() / 2) * 32) + 1;
 
-	tile.setPosition(1.0, y);
-	player.setPoint(1.0, y);
 	tile.setTextureRect(IntRect(321, 1, 30, 30));
 	player.setSprite(tile);
+	player.setPoint(1.0, y);
 	player.setSpeed(_speed);
 }
 
