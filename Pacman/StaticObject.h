@@ -13,24 +13,24 @@ public:
 	 * х - координата по оси х.
 	 * у - координата по оси у.
 	 */
-	void setPoint(const float& x, const float& y);
+	virtual void setPoint(const float& x, const float& y);
 
 	/* Функция возвращает координаты позиции объекта на поле.
 	 * point  - включает в себя две координаты:
 	 * first  - координата по оси х.
 	 * second - координата по оси у.
 	 */
-	std::pair<float, float>& getPoint();
+	virtual std::pair<float, float>& getPoint();
 
 	/* Интерфейс для доступа к внутреннему объекту типа Sprite.
 	 * Задаёт картинку присущую данному экземпляру объекта.
 	 */
-	void setSprite(Sprite& spr);
+	virtual void setSprite(Sprite& spr);
 
 	/* Интерфейс для отрисовки внутреннего бъекта типа Sprite в 
 	 * основном окне.
 	 */
-	void drawObject(RenderWindow& window);
+	virtual void drawObject(RenderWindow& window);
 protected:
 	/* Внутренняя переменная хранящая координаты данного объекта.
 	 * Задаётся списком инициализации с начальными координатами.

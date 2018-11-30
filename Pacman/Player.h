@@ -13,28 +13,28 @@ public:
 	 * key  - код нажатой клавиши.
 	 * time - значение таймера дл€ сдвига объекта.
 	*/
-	void setKeyPressed(Keyboard::Key key, float& time);
+	virtual void setKeyPressed(Keyboard::Key key, float& time);
 
 	/* »нтерфейс предоставл€ющий возможсность проверки
 	 * столкновени€ объекта с сокровищем на игровом поле:
 	 * gold - ссылка на контейнер содержащий в себе все
 	 * клетки с сокровищами игрового пол€.
 	*/
-	void checkCollisionGold(std::vector <StaticObject*>& gold);
+	virtual void checkCollisionGold(std::vector <StaticObject*>& gold);
 
 	/* »нтерфейс предоставл€ющий возможсность проверки
 	 * столкновени€ объекта с привидени€ми на игровом поле.
 	 * gosts - ссылка на контейнер содержащий в себе все
 	 * клетки с привидени€ми игрового пол€.
 	*/
-	bool checkCollisionGosts(std::vector <DinamicObject*>& gosts);
+	virtual bool checkCollisionGosts(std::vector <DinamicObject*>& gosts);
 
 	/* »нтерфейс предоставл€ющий возможсность отрисовки
 	 * состо€ни€ игрока вли€ющие на состо€ние игры.
 	 * ѕринимает в качестве аргумента:
 	 * window - ссылка на основное окно игры.
 	*/
-	void drawPlayerStatus(RenderWindow& window);
+	virtual void drawPlayerStatus(RenderWindow& window);
 
 	/*  ласс хран€щий в себе состо€ние игрока вли€ющее
 	 * на состо€ние игры:
@@ -49,16 +49,16 @@ public:
 	} playerStatus = PlayerStatus::live;
 private:
 	// ‘ункци€ обрабатывающа€ нажатие клавиши на лево.
-	void keyLeft(float& time);
+	virtual void keyLeft(float& time);
 
 	// ‘ункци€ обрабатывающа€ нажатие клавиши на право.
-	void keyRight(float& time);
+	virtual void keyRight(float& time);
 
 	// ‘ункци€ обрабатывающа€ нажатие клавиши вверх.
-	void keyUp(float& time);
+	virtual void keyUp(float& time);
 	
 	// ‘ункци€ обрабатывающа€ нажатие клавиши вниз.
-	void keyDown(float& time);
+	virtual void keyDown(float& time);
 
 	/* ‘ункци€ делает провенку на столкновение игрока с сокровищем,
 	 * координаты которого предаютс€ в функцию:
@@ -68,7 +68,7 @@ private:
 	 * true - в случае столкновени€.
 	 * false - в случает отсутстви€ столкновени€.
 	*/
-	bool collisionGold(std::pair<float, float>& p);
+	virtual bool collisionGold(std::pair<float, float>& p);
 
 	/* ¬нутренн€€ переменна€ хран€ща€ в себе шрифт дл€ текста
 	 * отображающего состо€ние игрок.

@@ -13,14 +13,14 @@ public:
 	 * значение скорости игры:
 	 * s - ссылка на значение скорости игры 
 	*/
-	void setSpeed(float& s);
+	virtual void setSpeed(float& s);
 
 	/* Интерфейс для добавления в контейнер типа Vector 
 	 * очередной картинки, отображающей состояние объека
 	 * в определённый момент :
 	 * spr - ссылка на уже сформинованную картинку.
 	*/
-	void setVSprites(Sprite& spr);
+	virtual void setVSprites(Sprite& spr);
 
 	/* Интерфейс здаёт значение внутненей переменной 
 	 * текущее направление движения объекта:
@@ -32,44 +32,44 @@ public:
 	 * -1 - движение в сторону уменьшения значения оси.
 	 * Движение по косым линиям не предусмотренно.
 	*/
-	void setMoveVector(int x, int y);
+	virtual void setMoveVector(int x, int y);
 
 	/* Интерфейс возвращающий значение внутренней 
 	 * переменной храящей текущее направление движения
 	 * объекта.
 	*/
-	std::pair<int, int>& getMoveVector();
+	virtual std::pair<int, int>& getMoveVector();
 
 	/* Интерфейс для обновления позиции объекта на 
 	 * игровом поле, согласно вектору текущего движения,
 	 * и подготовке его к перерисовке.
 	 * time - значение таймера для сдвига объекта.
 	*/
-	void update(const float& time);
+	virtual void update(const float& time);
 
 	/* Интерфейс предоставляющий возможсность проверки
 	 * столкновения объекта со стенами на игровом поле.
 	 * wall - ссылка на контейнер содержащий в себе все
 	 * клетки со стенами игрового поля.
 	*/
-	bool checkCollisionWall(std::vector <StaticObject*>& wall);
+	virtual bool checkCollisionWall(std::vector <StaticObject*>& wall);
 	/* Интерфейс предоставляющий возможность, в случае столкновения
 	 * со стеной, откатить объект обратно его первоначального движения
 	 * и не дать проходить через стены.
 	 * time - значение таймера для сдвига объекта.
 	*/
-	void moveBack(const float& time);
+	virtual void moveBack(const float& time);
 protected:
 	/* Внутренняя функция задающая картинку отображающую
 	 * текущее состояние объекта.
 	*/
-	void setTexture();
+	virtual void setTexture();
 
 	/* Внутренняя функция меняющая текущее значение внутреней
 	 * переменной отвечающей за момент переключение картинки 
 	 * отображающей текущее состояние объекта.
 	*/
-	void setCurrent(const float& time);
+	virtual void setCurrent(const float& time);
 
 	/* Функция делает провенку на столкновение данного объекта
 	 * с другим объектом, координаты которого предаются в функцию.
@@ -78,7 +78,7 @@ protected:
 	 * true - в случае столкновения.
 	 * false - в случает отсутствия столкновения.
 	*/
-	bool collision(std::pair<float, float>& p);
+	virtual bool collision(std::pair<float, float>& p);
 
 	// Внутненняя переменная хранящая значение скорости игры
 	float speed = 0.0;
